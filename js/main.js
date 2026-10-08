@@ -1,4 +1,4 @@
-/* COSMOPESIMISMO — comportamiento del sitio
+/* COSMOPESIMISMO: comportamiento del sitio
    - barra de progreso: posición en el libro completo
    - flechas del teclado: página anterior / siguiente
    - recuerda la última página leída (portada: "continuar en…")

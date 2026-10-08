@@ -1,4 +1,4 @@
-/*    COSMOPESIMISMO — hoja de estilos
+/*    COSMOPESIMISMO: hoja de estilos
    
    Cada página define su propia paleta en su <head>:
      -bg      fondo
@@ -427,7 +427,7 @@ main {
 .portada-parte .entrar { margin-top: 4rem; }
 
 /* =========================================================
-   II. CONGELAMIENTO — la oscuridad se enfría en azul profundo
+   II. CONGELAMIENTO: la oscuridad se enfría en azul profundo
    y se aclara fragmento a fragmento (colores en data-colores
    de congelamiento-texto.html)
    ========================================================= */
@@ -462,7 +462,7 @@ hr.escarcha {
 .aparecer.visible { opacity: 1; filter: none; transform: none; }
 
 /* =========================================================
-   III. PLÉYADES — luz azul pálida, cielo, constelación
+   III. PLÉYADES: luz azul pálida, cielo, constelación
    ========================================================= */
 
 canvas.cielo {
@@ -541,7 +541,7 @@ canvas.cielo {
 }
 
 /* =========================================================
-   I. ESTELÍFERA — luz de estrella arriba de la página,
+   I. ESTELÍFERA: luz de estrella arriba de la página,
    que se apaga a medida que se baja (y de poema en poema).
    --alto es el color del cielo al inicio de la página.
    ========================================================= */
