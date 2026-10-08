@@ -1,0 +1,531 @@
+/* =========================================================
+   COSMOPESIMISMO — hoja de estilos
+   ---------------------------------------------------------
+   Cada página define su propia paleta en su <head>:
+     --bg      fondo
+     --tinta   texto
+     --tenue   texto secundario (números, cabecera, navegación)
+     --luz     color de la estrella (acentos)
+     --brillo  intensidad del resplandor superior (0 = nada)
+   I. Estelífera va de una estrella amarilla a una enana roja;
+   II. Congelamiento es un campo blanco y frío;
+   III. Pléyades es oscuridad con puntos de luz.
+   ========================================================= */
+
+:root {
+  --serif: "EB Garamond", Garamond, "Times New Roman", serif;
+  --display: "Cormorant Garamond", "EB Garamond", Garamond, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --simbolo: "Segoe UI Symbol", "Noto Sans Symbols 2", "Apple Symbols", sans-serif;
+
+  --cuerpo: clamp(1.1rem, 1rem + 0.5vw, 1.42rem);
+  --paso: clamp(0.85em, 3.4vw, 2.1em);   /* un nivel de sangría del verso */
+  --ancho-verso: 38em;
+  --ancho-prosa: 34em;
+  --margen: clamp(16px, 5vw, 64px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--tinta);
+  font-family: var(--serif);
+  font-size: var(--cuerpo);
+  line-height: 1.55;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  font-variant-numeric: lining-nums;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Resplandor de estrella en lo alto de la página */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -30vh -20vw auto;
+  height: 90vh;
+  background: radial-gradient(ellipse at 50% 30%, var(--luz), transparent 62%);
+  opacity: var(--brillo, 0);
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: inherit; }
+
+::selection { background: var(--luz); color: var(--bg); }
+
+:focus-visible { outline: 1px solid var(--luz); outline-offset: 4px; }
+
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- marco común ---------- */
+
+.progreso {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 10;
+}
+.progreso span {
+  display: block;
+  height: 100%;
+  width: calc(var(--avance, 0) * 100%);
+  background: var(--luz);
+  opacity: .75;
+  transition: width .2s linear;
+}
+
+.cabecera {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 1.6rem var(--margen) 0;
+  font-family: var(--display);
+  font-size: .82rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--tenue);
+}
+.cabecera a { text-decoration: none; }
+.cabecera a:hover { color: var(--tinta); }
+
+main {
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--margen);
+}
+
+.pie {
+  position: relative;
+  z-index: 1;
+  padding: 2.5rem var(--margen) 2rem;
+  text-align: center;
+  font-family: var(--display);
+  font-size: .78rem;
+  letter-spacing: .18em;
+  color: var(--tenue);
+}
+
+/* Navegación anterior / índice / siguiente */
+.paso {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 1rem;
+  max-width: 60rem;
+  margin: 18vh auto 0;
+  padding: 2rem var(--margen) 0;
+  border-top: 1px solid color-mix(in srgb, var(--tenue) 35%, transparent);
+  font-family: var(--display);
+}
+.paso a {
+  text-decoration: none;
+  font-size: 1.05rem;
+  letter-spacing: .12em;
+  color: var(--tinta);
+  transition: color .3s;
+}
+.paso a:hover { color: var(--luz); }
+.paso small {
+  display: block;
+  font-size: .72rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--tenue);
+  margin-bottom: .2rem;
+}
+.paso .sig { text-align: right; }
+.paso .indice {
+  font-size: .72rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--tenue);
+}
+
+/* ---------- el poema ---------- */
+
+.poema {
+  max-width: calc(var(--ancho-verso) + 2 * var(--margen));
+  margin: 0 auto;
+}
+
+.titulo {
+  margin: 22vh 0 14vh;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 1.6rem + 4vw, 5.2rem);
+  line-height: 1;
+  letter-spacing: .14em;
+  color: var(--tinta);
+  text-shadow: 0 0 .6em color-mix(in srgb, var(--luz) calc(var(--brillo, 0) * 100%), transparent);
+}
+
+.seccion { margin: 0 0 16vh; }
+.seccion:last-child { margin-bottom: 0; }
+
+.numero {
+  margin: 0 0 2.2rem;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  letter-spacing: .2em;
+  color: var(--luz);
+}
+
+/* Cada verso es una línea; --i es su nivel de sangría.
+   Si un verso no cabe (pantallas pequeñas) continúa con sangría colgante. */
+.verso { max-width: var(--ancho-verso); }
+.v {
+  display: block;
+  padding-left: calc(var(--i, 0) * var(--paso) + 1.6em);
+  text-indent: -1.6em;
+}
+.aire { display: block; height: .6em; }
+.hueco { display: inline-block; width: clamp(2em, 10vw, 7em); }
+
+.verso.aireado .v { margin-bottom: 1.05em; }
+.verso.centrado { margin: 3em auto; text-align: center; }
+.verso.centrado .v { padding-left: 0; text-indent: 0; }
+
+/* DÉCADA 4: el poema que cae hacia el centro de la galaxia */
+.verso.derecha { margin-left: auto; text-align: right; }
+.verso.derecha .v {
+  padding: 0 calc(var(--r, 0) * .42em) 0 0;
+  text-indent: 0;
+  will-change: transform;
+}
+
+.dos-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0 clamp(1em, 4vw, 3em);
+  margin: .6em 0;
+}
+.dos-columnas .verso + .verso { padding-top: .1em; }
+
+.rotulos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.4em clamp(1em, 5vw, 3.5em);
+  margin-top: 1.6em;
+}
+.rotulo {
+  margin: 0;
+  font-family: var(--display);
+  letter-spacing: .2em;
+  color: var(--luz);
+}
+
+/* ---------- prosa y voces de la nave ---------- */
+
+.prosa {
+  max-width: var(--ancho-prosa);
+  margin: 0 auto 2.2em;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.prosa.ultima-centrada { text-align-last: center; }
+
+.mayus { letter-spacing: .07em; }
+.columna-estrecha { max-width: 21em; margin-left: auto; margin-right: auto; }
+.prosa.columna-estrecha { max-width: 21em; }
+.prosa.doble { line-height: 2.35; }
+.mayus.suelta { margin: 2.4em 0; text-align: center; color: var(--luz); letter-spacing: .2em; }
+
+/* La transmisión: dos voces dentro de la nave */
+.transmision {
+  max-width: 40em;
+  margin: 14vh auto 0;
+  padding-left: clamp(.9em, 3vw, 1.6em);
+  border-left: 1px solid color-mix(in srgb, var(--luz) 45%, transparent);
+}
+.nave {
+  max-width: none;
+  margin: 0 0 2.4em;
+  font-family: var(--mono);
+  font-weight: 300;
+  font-size: .78em;
+  line-height: 1.85;
+  text-align: left;
+  hyphens: none;
+}
+.nave.voz-a {
+  letter-spacing: .05em;
+  color: var(--luz);
+}
+.nave.voz-b { color: var(--tinta); opacity: .86; }
+
+/* Pléyades ☆☆☆☆☆: la cabina se reduce mientras se lee */
+[data-efecto="estrechar"] {
+  max-width: var(--ancho-cabina, 40em);
+  transition: max-width .25s linear;
+}
+
+/* ---------- portada ---------- */
+
+.portada main { padding: 0; }
+.inicio {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 var(--margen);
+}
+.inicio h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.1rem, 0.6rem + 7.4vw, 7.6rem);
+  letter-spacing: .16em;
+  margin-right: -.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.autor, .anio {
+  margin: 0;
+  font-family: var(--display);
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--tenue);
+}
+.autor { margin-top: 2.6rem; font-size: 1rem; }
+.anio { margin-top: .6rem; font-size: .85rem; }
+
+.acciones { display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-top: 4.5rem; }
+
+.entrar, .continuar {
+  font-family: var(--display);
+  font-size: .9rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--tinta);
+  padding: .7em 1.4em;
+  border: 1px solid color-mix(in srgb, var(--luz) 55%, transparent);
+  transition: background .4s, color .4s;
+}
+.entrar:hover { background: var(--luz); color: var(--bg); }
+.continuar { border-color: transparent; color: var(--tenue); font-size: .75rem; }
+.continuar:hover { color: var(--tinta); }
+
+/* Índice: las tres temperaturas del libro, lado a lado */
+.tabla {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.parte-indice {
+  padding: 4rem clamp(16px, 3vw, 3rem) 5rem;
+  min-height: 70vh;
+}
+.parte-indice-1 { background: radial-gradient(ellipse at 50% 0%, #3a2610, #0f0b08 70%); color: #f0e3cb; --luz: #f3c56b; --tenue: #a08f78; }
+.parte-indice-2 { background: #e8edf0; color: #1d2730; --luz: #6f93a8; --tenue: #566673; }
+.parte-indice-3 { background: #040509; color: #c5c9d8; --luz: #e6ecff; --tenue: #80869b; }
+.parte-indice h2 {
+  margin: 0 0 2.4rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.3rem);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.parte-indice h2 a { text-decoration: none; }
+.parte-indice h2 span { display: block; font-size: .5em; letter-spacing: .3em; color: var(--luz); margin-bottom: .5em; }
+.parte-indice ol { list-style: none; margin: 0; padding: 0; }
+.parte-indice li { margin: .55em 0; }
+.parte-indice li a, .parte-indice .nota a {
+  text-decoration: none;
+  font-family: var(--display);
+  letter-spacing: .16em;
+  color: inherit;
+  opacity: .8;
+  transition: opacity .3s, color .3s;
+}
+.parte-indice li a:hover, .parte-indice .nota a:hover { opacity: 1; color: var(--luz); }
+.parte-indice-3 li a { font-family: var(--simbolo); letter-spacing: .25em; font-size: .9em; }
+.nota { font-style: italic; }
+
+.portada .pie { background: #040509; color: #80869b; }
+
+/* ---------- portadillas de cada parte ---------- */
+
+.portada-parte {
+  min-height: calc(100vh - 6rem);
+  min-height: calc(100svh - 6rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 8vh;
+  padding-bottom: 8vh;
+}
+.numeral {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  letter-spacing: .4em;
+  color: var(--luz);
+}
+.portada-parte h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(2.2rem, 1rem + 6vw, 6.4rem);
+  letter-spacing: .18em;
+  margin-right: -.18em;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+.contenido {
+  list-style: none;
+  padding: 0;
+  margin: 3.5rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .4rem 1.6rem;
+  max-width: 34rem;
+  font-family: var(--display);
+  letter-spacing: .16em;
+  font-size: .9rem;
+}
+.contenido a { text-decoration: none; color: var(--tenue); transition: color .3s; }
+.contenido a:hover { color: var(--luz); }
+.portada-parte .entrar { margin-top: 4rem; }
+
+/* =========================================================
+   II. CONGELAMIENTO — campo blanco, fragmentos que cristalizan
+   ========================================================= */
+
+.parte-2 .titulo, .parte-2 .portada-parte h1 { text-shadow: none; }
+.parte-2 .portada-parte h1 { color: var(--tinta); }
+
+.congelamiento-texto { padding-top: 4vh; }
+
+.fragmento {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  padding: 6vh 0;
+}
+.fragmento .verso { width: 100%; }
+
+hr.escarcha {
+  border: 0;
+  height: 1px;
+  margin: 0 auto;
+  width: min(100%, 22em);
+  background: linear-gradient(90deg, transparent, var(--luz) 20%, color-mix(in srgb, var(--luz) 40%, #fff) 50%, var(--luz) 80%, transparent);
+  opacity: .7;
+}
+
+.aparecer {
+  opacity: 0;
+  filter: blur(3px);
+  transform: translateY(1.2rem);
+  transition: opacity 1.6s ease, filter 2.2s ease, transform 1.6s ease;
+}
+.aparecer.visible { opacity: 1; filter: none; transform: none; }
+
+/* =========================================================
+   III. PLÉYADES — oscuridad, cielo, constelación
+   ========================================================= */
+
+canvas.cielo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pleyades-texto { max-width: calc(44em + 2 * var(--margen)); }
+
+.estrellas {
+  font-family: var(--simbolo);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 1rem + 1.6vw, 2.2rem);
+  letter-spacing: .5em;
+  margin: 6vh 0 12vh;
+  text-align: center;
+  color: var(--luz);
+  text-shadow: 0 0 .8em color-mix(in srgb, var(--luz) 60%, transparent);
+}
+
+.constelacion { margin: 10vh auto 0; max-width: 18rem; }
+.constelacion.grande { max-width: 30rem; width: 100%; margin: 4rem auto 0; }
+.constelacion svg { display: block; width: 100%; height: auto; overflow: visible; }
+.constelacion polyline {
+  fill: none;
+  stroke: var(--tenue);
+  stroke-width: .25;
+  stroke-dasharray: .8 1.6;
+  opacity: .7;
+}
+.constelacion .nucleo { fill: var(--tenue); transition: fill .4s; }
+.constelacion .halo { fill: var(--luz); opacity: 0; transition: opacity .4s; }
+.constelacion a:hover .nucleo, .constelacion .leida .nucleo { fill: var(--tinta); }
+.constelacion a:hover .halo { opacity: .12; }
+.constelacion .actual .nucleo { fill: var(--luz); }
+.constelacion .actual .halo { opacity: .22; }
+.constelacion a:focus-visible { outline: none; }
+.constelacion a:focus-visible .halo { opacity: .35; }
+
+.diagonal .col-izq { margin: 0 auto 6em 0; max-width: 21em; }
+.diagonal .col-der { margin: 0 0 0 auto; max-width: 21em; }
+
+.bloque-centrado .prosa { max-width: 28em; }
+
+/* ---------- pantallas pequeñas ---------- */
+
+@media (max-width: 760px) {
+  .tabla { grid-template-columns: 1fr; }
+  .parte-indice { min-height: 0; padding-top: 3rem; padding-bottom: 3.5rem; }
+  .titulo { margin: 14vh 0 9vh; }
+  .paso { margin-top: 12vh; grid-template-columns: 1fr 1fr; }
+  .paso .indice { grid-column: 1 / -1; grid-row: 2; text-align: center; padding-top: .6rem; }
+  .cabecera { font-size: .68rem; letter-spacing: .22em; }
+  .dos-columnas { font-size: .9em; gap: 0 .9em; }
+  .dos-columnas .v { text-indent: -.8em; padding-left: calc(var(--i, 0) * .7em + .8em); }
+  .fragmento { min-height: 52vh; }
+  .diagonal .col-izq, .diagonal .col-der { max-width: none; }
+  .diagonal .col-der { padding-left: 2.2em; }
+  .prosa.columna-estrecha, .columna-estrecha { max-width: 100%; }
+  .nave { font-size: .74em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .aparecer { opacity: 1; filter: none; transform: none; transition: none; }
+  .progreso span, [data-efecto="estrechar"] { transition: none; }
+}
+
+@media print {
+  body::before, .progreso, .paso, canvas.cielo, .cabecera { display: none; }
+  body { background: #fff; color: #000; }
+}
