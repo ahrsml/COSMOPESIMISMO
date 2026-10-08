@@ -1,12 +1,11 @@
-/* =========================================================
-   COSMOPESIMISMO — hoja de estilos
-   ---------------------------------------------------------
+/*    COSMOPESIMISMO — hoja de estilos
+   
    Cada página define su propia paleta en su <head>:
-     --bg      fondo
-     --tinta   texto
-     --tenue   texto secundario (números, cabecera, navegación)
-     --luz     color de la estrella (acentos)
-     --brillo  intensidad del resplandor superior (0 = nada)
+     -bg      fondo
+     -tinta   texto
+     -tenue   texto secundario (números, cabecera, navegación)
+     -luz     color de la estrella (acentos)
+     -brillo  intensidad del resplandor superior (0 = nada)
    I. Estelífera va de una estrella amarilla a una enana roja;
    II. Congelamiento es un campo blanco y frío;
    III. Pléyades es oscuridad con puntos de luz.
@@ -352,8 +351,8 @@ main {
   min-height: 70vh;
 }
 .parte-indice-1 { background: radial-gradient(ellipse at 50% 0%, #3a2610, #0f0b08 70%); color: #f0e3cb; --luz: #f3c56b; --tenue: #a08f78; }
-.parte-indice-2 { background: #e8edf0; color: #1d2730; --luz: #6f93a8; --tenue: #566673; }
-.parte-indice-3 { background: #040509; color: #c5c9d8; --luz: #e6ecff; --tenue: #80869b; }
+.parte-indice-2 { background: linear-gradient(180deg, #0a0c16, #24446e); color: #dfe7f1; --luz: #86aedb; --tenue: #8d9db4; }
+.parte-indice-3 { background: #dbe5ef; color: #13213a; --luz: #2c5c97; --tenue: #4b5e78; }
 .parte-indice h2 {
   margin: 0 0 2.4rem;
   font-family: var(--display);
@@ -428,10 +427,11 @@ main {
 .portada-parte .entrar { margin-top: 4rem; }
 
 /* =========================================================
-   II. CONGELAMIENTO — campo blanco, fragmentos que cristalizan
+   II. CONGELAMIENTO — la oscuridad se enfría en azul profundo
+   y se aclara fragmento a fragmento (colores en data-colores
+   de congelamiento-texto.html)
    ========================================================= */
 
-.parte-2 .titulo, .parte-2 .portada-parte h1 { text-shadow: none; }
 .parte-2 .portada-parte h1 { color: var(--tinta); }
 
 .congelamiento-texto { padding-top: 4vh; }
@@ -462,7 +462,7 @@ hr.escarcha {
 .aparecer.visible { opacity: 1; filter: none; transform: none; }
 
 /* =========================================================
-   III. PLÉYADES — oscuridad, cielo, constelación
+   III. PLÉYADES — luz azul pálida, cielo, constelación
    ========================================================= */
 
 canvas.cielo {
@@ -484,7 +484,7 @@ canvas.cielo {
   margin: 6vh 0 12vh;
   text-align: center;
   color: var(--luz);
-  text-shadow: 0 0 .8em color-mix(in srgb, var(--luz) 60%, transparent);
+  text-shadow: 0 0 .8em color-mix(in srgb, var(--luz) 25%, transparent);
 }
 
 .constelacion { margin: 10vh auto 0; max-width: 18rem; }
@@ -552,3 +552,7 @@ body.parte-1::before {
   position: absolute;
   height: 150vh;
 }
+
+/* Congelamiento: el color cambia con la lectura (ver js/main.js) */
+body.pag-congelamiento { transition: background-color .4s linear, color 1.2s ease; }
+body.pag-congelamiento .cabecera, body.pag-congelamiento .numero, body.pag-congelamiento .paso small { transition: color 1.2s ease; }

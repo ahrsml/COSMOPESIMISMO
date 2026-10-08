@@ -2,7 +2,8 @@
    - barra de progreso: posición en el libro completo
    - flechas del teclado: página anterior / siguiente
    - recuerda la última página leída (portada: "continuar en…")
-   - Congelamiento: los fragmentos cristalizan al aparecer
+   - Congelamiento: los fragmentos cristalizan al aparecer;
+     el fondo pasa del azul profundo a la luz de Pléyades
    - DÉCADA 4: los versos caen hacia el centro
    - Pléyades ☆☆☆☆☆: la cabina se reduce mientras se lee
    - Pléyades: cielo estrellado de fondo */
@@ -124,6 +125,33 @@
     });
   }
 
+
+  /* ---------- Congelamiento: del azul profundo a la luz ---------- */
+  var hielo = document.querySelector("[data-colores]");
+  var colores = hielo ? hielo.dataset.colores.trim().split(/\s+/).map(function (c) {
+    return [1, 3, 5].map(function (i) { return parseInt(c.substr(i, 2), 16); });
+  }) : [];
+  var TINTA_CLARA = { tinta: "#dfe7f1", tenue: "#8d9db4", luz: "#86aedb" };
+  var TINTA_OSCURA = { tinta: "#13213a", tenue: "#4b5e78", luz: "#2c5c97" };
+  function luminancia(rgb) {
+    var l = rgb.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2];
+  }
+  function enfriar() {
+    var alto = document.documentElement.scrollHeight - window.innerHeight;
+    var p = alto > 0 ? limitar(window.scrollY / alto) : 0;
+    var x = p * (colores.length - 1);
+    var i = Math.min(Math.floor(x), colores.length - 2);
+    var t = x - i;
+    var rgb = colores[i].map(function (v, k) { return Math.round(v + (colores[i + 1][k] - v) * t); });
+    var raiz = document.documentElement.style;
+    raiz.setProperty("--bg", "rgb(" + rgb.join(",") + ")");
+    var tinta = luminancia(rgb) > 0.2 ? TINTA_OSCURA : TINTA_CLARA;
+    raiz.setProperty("--tinta", tinta.tinta);
+    raiz.setProperty("--tenue", tinta.tenue);
+    raiz.setProperty("--luz", tinta.luz);
+  }
+
   /* ---------- bucle de scroll ---------- */
   var pendiente = false;
   function alMover() {
@@ -134,6 +162,7 @@
       progreso();
       if (gravedad.length) caer();
       if (cabinas.length) estrechar();
+      if (colores.length > 1) enfriar();
     });
   }
   window.addEventListener("scroll", alMover, { passive: true });
@@ -173,7 +202,7 @@
         var a = quieto ? s.a : s.a * (0.75 + 0.25 * Math.sin(s.f + t * 0.001 * s.v));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(220,228,255," + a.toFixed(3) + ")";
+        ctx.fillStyle = "rgba(28,52,96," + (a * 0.6).toFixed(3) + ")";
         ctx.fill();
       }
       if (!quieto) requestAnimationFrame(dibujar);
