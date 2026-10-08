@@ -33,12 +33,12 @@ El resto del diseño está en `css/estilo.css` y el comportamiento (barra de pro
 
 ## Publicar en GitHub Pages
 
-Una cuenta de GitHub puede tener una página por cada repositorio, además de la página principal de usuario. Este sitio quedaría en `https://<usuario>.github.io/cosmopesimismo/`.
+Una cuenta de GitHub puede tener una página por cada repositorio, además de la página principal de usuario. Este sitio quedaría en `https://ahrsml.github.io/cosmopesimismo/`.
 
 1. En GitHub, crea un repositorio nuevo llamado `cosmopesimismo` (público, vacío, sin README).
 2. Desde esta carpeta:
    ```
-   git remote add origin https://github.com/<usuario>/cosmopesimismo.git
+   git remote add origin https://github.com/ahrsml/cosmopesimismo.git
    git push -u origin main
    ```
 3. En el repositorio: **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
