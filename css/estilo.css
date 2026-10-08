@@ -1,14 +1,17 @@
-/*    COSMOPESIMISMO: hoja de estilos
-   
-   Cada página define su propia paleta en su <head>:
-     -bg      fondo
-     -tinta   texto
-     -tenue   texto secundario (números, cabecera, navegación)
-     -luz     color de la estrella (acentos)
-     -brillo  intensidad del resplandor superior (0 = nada)
-   I. Estelífera va de una estrella amarilla a una enana roja;
-   II. Congelamiento es un campo blanco y frío;
-   III. Pléyades es oscuridad con puntos de luz.
+/* =========================================================
+   COSMOPESIMISMO: hoja de estilos
+
+   Colores: blanco y azul, una sola bajada continua.
+   Cada página empieza en el color en que terminó la anterior;
+   el recorrido de cada página está en data-colores del <body>
+   y js/main.js lo aplica mientras se lee.
+     --bg      fondo
+     --tinta   texto
+     --tenue   texto secundario (números, cabecera, navegación)
+     --luz     acento
+   I. Estelífera: de la luz blanca de una estrella al azul noche.
+   II. Congelamiento: del azul más profundo hacia la claridad.
+   III. Pléyades: azul pálido que se vuelve blanco.
    ========================================================= */
 
 /* Tipografías incluidas en el sitio (no dependen de internet ni de Google) */
@@ -341,18 +344,26 @@ main {
 .continuar { border-color: transparent; color: var(--tenue); font-size: .75rem; }
 .continuar:hover { color: var(--tinta); }
 
-/* Índice: las tres temperaturas del libro, lado a lado */
-.tabla {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
+/* Índice: las tres partes una bajo otra, en una sola bajada de color */
+.tabla { display: block; }
 .parte-indice {
-  padding: 4rem clamp(16px, 3vw, 3rem) 5rem;
-  min-height: 70vh;
+  padding: 5rem var(--margen) 6rem;
+  text-align: center;
 }
-.parte-indice-1 { background: radial-gradient(ellipse at 50% 0%, #3a2610, #0f0b08 70%); color: #f0e3cb; --luz: #f3c56b; --tenue: #a08f78; }
-.parte-indice-2 { background: linear-gradient(180deg, #0a0c16, #24446e); color: #dfe7f1; --luz: #86aedb; --tenue: #8d9db4; }
-.parte-indice-3 { background: #dbe5ef; color: #13213a; --luz: #2c5c97; --tenue: #4b5e78; }
+.parte-indice-1 {
+  min-height: 115vh;
+  background: linear-gradient(180deg, #f4f7fb 0, #e2eaf3 30%, #ccdaea 48%, #adc3dc 58%, #7f9cc0 68%, #4f6f99 78%, #2a4470 88%, #0b1020 100%);
+  color: #13213a; --luz: #2c5c97; --tenue: #4b5e78;
+}
+.parte-indice-2 {
+  min-height: 80vh;
+  background: linear-gradient(180deg, #0b1020 0, #090d1a 10%, #0f1f3d 30%, #1a3157 45%, #2f4f7d 60%, #6f8fb8 75%, #b9cbe0 90%, #e3eaf3 100%);
+  color: #e3eaf3; --luz: #9fc0e6; --tenue: #8fa3bd;
+}
+.parte-indice-3 {
+  background: linear-gradient(180deg, #e3eaf3, #fafbfd);
+  color: #13213a; --luz: #2c5c97; --tenue: #4b5e78;
+}
 .parte-indice h2 {
   margin: 0 0 2.4rem;
   font-family: var(--display);
@@ -377,7 +388,7 @@ main {
 .parte-indice-3 li a { font-family: var(--simbolo); letter-spacing: .25em; font-size: .9em; }
 .nota { font-style: italic; }
 
-.portada .pie { background: #040509; color: #80869b; }
+.portada .pie { background: #fafbfd; color: #4b5e78; }
 
 /* ---------- portadillas de cada parte ---------- */
 
@@ -540,19 +551,7 @@ canvas.cielo {
   body { background: #fff; color: #000; }
 }
 
-/* =========================================================
-   I. ESTELÍFERA: luz de estrella arriba de la página,
-   que se apaga a medida que se baja (y de poema en poema).
-   --alto es el color del cielo al inicio de la página.
-   ========================================================= */
-body.parte-1 {
-  background: linear-gradient(180deg, var(--alto, var(--bg)) 0, var(--bg) 140vh) no-repeat, var(--bg);
+/* Transición del texto cuando el fondo pasa de claro a oscuro */
+body, .cabecera, .numero, .paso a, .paso small, .rotulo, .nave, .contenido a {
+  transition: color 1.2s ease;
 }
-body.parte-1::before {
-  position: absolute;
-  height: 150vh;
-}
-
-/* Congelamiento: el color cambia con la lectura (ver js/main.js) */
-body.pag-congelamiento { transition: background-color .4s linear, color 1.2s ease; }
-body.pag-congelamiento .cabecera, body.pag-congelamiento .numero, body.pag-congelamiento .paso small { transition: color 1.2s ease; }

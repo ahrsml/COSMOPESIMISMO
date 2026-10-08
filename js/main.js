@@ -2,8 +2,9 @@
    - barra de progreso: posición en el libro completo
    - flechas del teclado: página anterior / siguiente
    - recuerda la última página leída (portada: "continuar en…")
-   - Congelamiento: los fragmentos cristalizan al aparecer;
-     el fondo pasa del azul profundo a la luz de Pléyades
+   - color: el fondo recorre los colores de data-colores (en <body>)
+     a medida que se baja; el texto se vuelve claro u oscuro según el fondo
+   - Congelamiento: los fragmentos cristalizan al aparecer
    - DÉCADA 4: los versos caen hacia el centro
    - Pléyades ☆☆☆☆☆: la cabina se reduce mientras se lee
    - Pléyades: cielo estrellado de fondo */
@@ -126,18 +127,23 @@
   }
 
 
-  /* ---------- Congelamiento: del azul profundo a la luz ---------- */
-  var hielo = document.querySelector("[data-colores]");
+  /* ---------- color continuo de página en página ---------- */
+  var hielo = document.body.dataset.colores ? document.body : null;
   var colores = hielo ? hielo.dataset.colores.trim().split(/\s+/).map(function (c) {
     return [1, 3, 5].map(function (i) { return parseInt(c.substr(i, 2), 16); });
   }) : [];
-  var TINTA_CLARA = { tinta: "#dfe7f1", tenue: "#8d9db4", luz: "#86aedb" };
-  var TINTA_OSCURA = { tinta: "#13213a", tenue: "#4b5e78", luz: "#2c5c97" };
+  // Tinta según la luminosidad del fondo (de fondo claro a fondo oscuro)
+  var TINTAS = [
+    { desde: 0.45, tinta: "#13213a", tenue: "#4b5e78", luz: "#2c5c97" },
+    { desde: 0.2,  tinta: "#0e1a2e", tenue: "#1f3150", luz: "#1b3f74" },
+    { desde: 0.1,  tinta: "#f1f5fa", tenue: "#d0dbe8", luz: "#e3edf9" },
+    { desde: 0,    tinta: "#e3eaf3", tenue: "#8fa3bd", luz: "#9fc0e6" }
+  ];
   function luminancia(rgb) {
     var l = rgb.map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
     return 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2];
   }
-  function enfriar() {
+  function colorear() {
     var alto = document.documentElement.scrollHeight - window.innerHeight;
     var p = alto > 0 ? limitar(window.scrollY / alto) : 0;
     var x = p * (colores.length - 1);
@@ -146,7 +152,8 @@
     var rgb = colores[i].map(function (v, k) { return Math.round(v + (colores[i + 1][k] - v) * t); });
     var raiz = document.documentElement.style;
     raiz.setProperty("--bg", "rgb(" + rgb.join(",") + ")");
-    var tinta = luminancia(rgb) > 0.2 ? TINTA_OSCURA : TINTA_CLARA;
+    var l = luminancia(rgb);
+    var tinta = TINTAS.filter(function (t) { return l >= t.desde; })[0];
     raiz.setProperty("--tinta", tinta.tinta);
     raiz.setProperty("--tenue", tinta.tenue);
     raiz.setProperty("--luz", tinta.luz);
@@ -162,7 +169,7 @@
       progreso();
       if (gravedad.length) caer();
       if (cabinas.length) estrechar();
-      if (colores.length > 1) enfriar();
+      if (colores.length > 1) colorear();
     });
   }
   window.addEventListener("scroll", alMover, { passive: true });
