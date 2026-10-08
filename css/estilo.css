@@ -376,7 +376,7 @@ main {
 .parte-indice h2 span { display: block; font-size: .5em; letter-spacing: .3em; color: var(--luz); margin-bottom: .5em; }
 .parte-indice ol { list-style: none; margin: 0; padding: 0; }
 .parte-indice li { margin: .55em 0; }
-.parte-indice li a, .parte-indice .nota a {
+.parte-indice li a {
   text-decoration: none;
   font-family: var(--display);
   letter-spacing: .16em;
@@ -384,9 +384,8 @@ main {
   opacity: .8;
   transition: opacity .3s, color .3s;
 }
-.parte-indice li a:hover, .parte-indice .nota a:hover { opacity: 1; color: var(--luz); }
+.parte-indice li a:hover { opacity: 1; color: var(--luz); }
 .parte-indice-3 li a { font-family: var(--simbolo); letter-spacing: .25em; font-size: .9em; }
-.nota { font-style: italic; }
 
 .portada .pie { background: #fafbfd; color: #4b5e78; }
 
