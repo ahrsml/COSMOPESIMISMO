@@ -539,3 +539,16 @@ canvas.cielo {
   body::before, .progreso, .paso, canvas.cielo, .cabecera { display: none; }
   body { background: #fff; color: #000; }
 }
+
+/* =========================================================
+   I. ESTELÍFERA — luz de estrella arriba de la página,
+   que se apaga a medida que se baja (y de poema en poema).
+   --alto es el color del cielo al inicio de la página.
+   ========================================================= */
+body.parte-1 {
+  background: linear-gradient(180deg, var(--alto, var(--bg)) 0, var(--bg) 140vh) no-repeat, var(--bg);
+}
+body.parte-1::before {
+  position: absolute;
+  height: 150vh;
+}
